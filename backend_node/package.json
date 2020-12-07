@@ -1,17 +1,26 @@
 {
-  "name": "backend_node",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "serve": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1"
-  }
+	"name": "backend_node",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"serve": "node index.js",
+		"dev": "cross-env NODE_ENV=development nodemon --legacy-watch index.js",
+		"test": "newman run newman/workana_dev.postman_collection.json --folder test --environment newman/workana_dev.postman_environment.json -r cli"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"handy-redis": "^2.0.3",
+		"redis": "^3.0.2",
+		"uuid": "^8.3.1"
+	},
+	"devDependencies": {
+		"cross-env": "^7.0.3",
+		"newman": "^5.2.1",
+		"nodemon": "^2.0.6"
+	}
 }
