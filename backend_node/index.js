@@ -1,17 +1,24 @@
 const app = require("express")();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const port = 8082;
-app.use(bodyParser.json());
 
+app.use(bodyParser.json());
 app.use(cors());
 
+// Router
+const resetRoutes = require("./routes/reset-route");
+const issueRoutes = require("./routes/issue-route");
+const userRoutes = require("./routes/user-route");
 
-app.get('/issue/:issue', function(req, res) {
-    return res.json({issue: parseInt(req.params.issue,10)})
-})
+// Routes map
+app.use("/reset", resetRoutes);
+app.use("/issue", issueRoutes);
+app.use("/user", userRoutes);
 
+const PORT = process.env.PORT || 8082;
 
-app.listen(port, () => {
-    console.log(`Backend node listen in port ${port}`);
+app.listen(PORT, () => {
+	console.log(`Backend node listen in PORT: ${PORT}`);
 });
+
+module.exports = app;
