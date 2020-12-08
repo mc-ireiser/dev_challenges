@@ -5,7 +5,7 @@ exports.resetdb = async (req, res, next) => {
 		const result = await redisClient.flushall();
 
 		res.json({
-			result,
+			message: result === "ok" ? "The database was deleted" : result,
 		});
 	} catch (error) {
 		console.log(error);
