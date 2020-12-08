@@ -1,11 +1,4 @@
-# frontend
-
-
-Run these commands inside frontend:
-
-```
-docker-compose exec frontend bash ...
-```
+# dev_chalenge_front
 
 ## Project setup
 ```
