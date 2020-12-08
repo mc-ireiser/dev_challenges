@@ -10,7 +10,7 @@ const wsServer = new ws.Server({ noServer: true });
 
 wsServer.on("connection", (socket) => {
 	socket.on("message", (message) => {
-		//socket.send(message);
+		// socket.send(message);
 		sendMessageToEveryClient(message);
 	});
 });
