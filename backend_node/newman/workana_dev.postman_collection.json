@@ -53,7 +53,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jesus Rodriguez\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Jesus Rodriguez\",\r\n    \"token\": \"ireiser\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -69,6 +69,35 @@
 							"port": "8082",
 							"path": [
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"ireiser\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"user",
+								"login"
 							]
 						}
 					},
@@ -367,7 +396,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Test Name\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Jesus Rodriguez\",\r\n    \"token\": \"ireiser\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -400,10 +429,10 @@
 									"    pm.response.to.have.status(400);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Should have a message `A name is required`\", function () {\r",
+									"pm.test(\"Should have a message `All fields are required`\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    var message = jsonData.message;\r",
-									"    pm.expect(message).to.eql(\"A name is required\")\r",
+									"    pm.expect(message).to.eql(\"All fields are required\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -425,7 +454,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"\"\r\n}",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"token\": \"ireiser\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1065,7 +1094,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Test Name\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Test Name\",\r\n    \"token\": \"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1335,7 +1364,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Test Name\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Test Name 2\",\r\n    \"token\": \"test1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
