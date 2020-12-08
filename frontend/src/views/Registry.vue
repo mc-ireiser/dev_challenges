@@ -5,32 +5,73 @@
 				<div class="columns">
 					<div class="column is-1"></div>
 					<div class="column">
-						<h1 class="title is-2 mb-6">Planning Poker</h1>
-						<h2 class="title is-4">Workana Hiring Challenge</h2>
+						<h1 class="title is-2 mb-4">Planning Poker</h1>
+						<h2 class="title is-4 mb-5">Workana Hiring Challenge</h2>
 						<div class="columns">
 							<div class="column"></div>
 							<div class="column is-half">
 								<div class="field  mt-2">
 									<div class="control">
-										<input
-											v-model="name"
-											class="input"
-											type="text"
-											autocomplete="none"
-											placeholder="What is your name? - required"
-										/>
+										<div>
+											<label class="label mt-5 has-text-left">Username</label>
+											<input
+												v-model="userName"
+												class="input"
+												type="text"
+												autocomplete="none"
+												placeholder="Set up a username"
+											/>
+										</div>
+										<div v-if="!register" class="mt-4">
+											<label class="label has-text-left">Name</label>
+											<input
+												v-model="name"
+												class="input"
+												type="text"
+												autocomplete="none"
+												placeholder="What is your name?"
+											/>
+										</div>
 									</div>
-									<div class="control mt-4">
+									<div class="control mt-5">
 										<button
+											v-if="register"
+											@click="loginUser()"
+											:class="{
+												'is-loading': loading
+											}"
+											class="button is-primary is-fullwidth has-text-weight-bold"
+											:disabled="!userName || loading"
+										>
+											Login
+										</button>
+										<button
+											v-else
 											@click="registerUser()"
 											:class="{
 												'is-loading': loading
 											}"
 											class="button is-primary is-fullwidth has-text-weight-bold"
-											:disabled="!name || loading"
+											:disabled="!name || !userName || loading"
 										>
-											Get in
+											Sign in
 										</button>
+									</div>
+									<div class="control mt-5">
+										<p
+											v-if="register"
+											@click="register = !register"
+											class="is-clickable"
+										>
+											Register new user
+										</p>
+										<p
+											v-else
+											@click="register = !register"
+											class="is-clickable"
+										>
+											Login
+										</p>
 									</div>
 								</div>
 							</div>
@@ -53,7 +94,9 @@ export default {
 	data() {
 		return {
 			name: "",
-			loading: false
+			userName: "",
+			loading: false,
+			register: true
 		};
 	},
 
@@ -67,18 +110,36 @@ export default {
 	},
 
 	methods: {
+		async loginUser() {
+			this.loading = true;
+			const response = await http.post("/user/login", {
+				token: this.userName
+			});
+
+			this.processResponse(response);
+		},
+
 		async registerUser() {
 			this.loading = true;
-			const response = await http.post("/user", { name: this.name });
+			const response = await http.post("/user", {
+				name: this.name,
+				token: this.userName
+			});
 
+			this.processResponse(response);
+		},
+
+		async processResponse(response) {
 			if (response.ok) {
 				const data = response.data;
 
+				const token = this.register ? this.userName : data.token;
+
 				lscache.set("userName", data.name, 3600000);
-				lscache.set("token", data.token, 3600000);
+				lscache.set("token", token, 3600000);
 
 				http.setHeaders({
-					token: data.token
+					token
 				});
 
 				bulmaToast.toast({ message: `Hi, ${data.name}`, type: "is-primary" });
@@ -95,5 +156,3 @@ export default {
 	}
 };
 </script>
-
-<style></style>
