@@ -298,60 +298,9 @@ export default {
 		}
 	},
 
-	async mounted() {
-		const self = this;
+	mounted() {
+		this.wsS();
 		this.getIssues();
-
-		const data = await JSON.stringify({
-			event: "conection",
-			name: this.storedName
-		});
-
-		// Connection opened
-		socket.addEventListener("open", function() {
-			socket.send(data);
-		});
-
-		// Listen for messages
-		socket.addEventListener("message", async function(event) {
-			console.log("Message from server ", event.data);
-			const response = await JSON.parse(event.data);
-
-			if (response.event === "create:issue") {
-				self.getIssues();
-			}
-
-			if (response.event === "join:issue") {
-				if (response.token !== self.storedToken) {
-					const message = `${response.name} has joined joined the issue ${response.issue}`;
-					bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
-				}
-
-				if (response.issue === self.selectedIssue) {
-					self.getIssue();
-				}
-			}
-
-			if (response.event === "vote:issue") {
-				if (response.token !== self.storedToken) {
-					const message = `${response.name} has voted on the issue ${response.issue}`;
-					bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
-				}
-
-				if (response.issue === self.selectedIssue) {
-					self.getIssue();
-				}
-			}
-
-			if (response.event === "reset:db") {
-				location.reload();
-			}
-		});
-
-		// Handle errors
-		socket.addEventListener("error", function(event) {
-			console.log("WebSocket error observed:", event);
-		});
 	},
 
 	methods: {
@@ -504,6 +453,59 @@ export default {
 			} else {
 				bulmaToast.toast({ message, type: "is-danger", duration: 5000 });
 			}
+		},
+
+		async wsS() {
+			const self = this;
+			const data = await JSON.stringify({
+				event: "conection",
+				name: this.storedName
+			});
+
+			// Connection opened
+			socket.addEventListener("open", function() {
+				socket.send(data);
+			});
+
+			// Listen for messages
+			socket.addEventListener("message", async function(event) {
+				const response = await JSON.parse(event.data);
+
+				if (response.event === "create:issue") {
+					self.getIssues();
+				}
+
+				if (response.event === "join:issue") {
+					if (response.token !== self.storedToken) {
+						const message = `${response.name} has joined joined the issue ${response.issue}`;
+						bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
+					}
+
+					if (response.issue === self.selectedIssue) {
+						self.getIssue();
+					}
+				}
+
+				if (response.event === "vote:issue") {
+					if (response.token !== self.storedToken) {
+						const message = `${response.name} has voted on the issue ${response.issue}`;
+						bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
+					}
+
+					if (response.issue === self.selectedIssue) {
+						self.getIssue();
+					}
+				}
+
+				if (response.event === "reset:db") {
+					location.reload();
+				}
+			});
+
+			// Handle errors
+			socket.addEventListener("error", function(event) {
+				console.log("WebSocket error observed:", event);
+			});
 		}
 	}
 };
