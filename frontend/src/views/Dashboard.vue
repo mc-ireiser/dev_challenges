@@ -1,7 +1,27 @@
 <template>
 	<section class="hero is-white is-fullheight">
 		<div class="container is-fluid mt-6">
-			<div class="columns">
+			<nav class="level">
+				<!-- Left side -->
+				<div class="level-left">
+					<div class="level-item">
+						<h1 class="title is-5">The Planning Poker Lobby</h1>
+					</div>
+				</div>
+				<!-- Right side -->
+				<div class="level-right">
+					<div class="level-item">
+						<h2 class="subtitle mr-5">{{ storedName }}</h2>
+						<button
+							@click="logout()"
+							class="button is-danger is-small is-outlined"
+						>
+							Log out
+						</button>
+					</div>
+				</div>
+			</nav>
+			<div class="columns mt-4">
 				<!-- Votes -->
 				<div class="column is-half is-text-centered">
 					<h2 class="title">Voting board</h2>
@@ -335,6 +355,11 @@ export default {
 	},
 
 	methods: {
+		logout() {
+			lscache.flush();
+			location.reload();
+		},
+
 		async getIssues() {
 			this.loadigIssues = true;
 			const response = await http.get("/issue/all");
