@@ -1,6 +1,6 @@
 const redisClient = require("../helpers/redis");
 
-module.exports = async function checkToken(req, res, next) {
+module.exports = async function checkVote(req, res, next) {
 	const voteValue = req.body.value;
 
 	const vote =
