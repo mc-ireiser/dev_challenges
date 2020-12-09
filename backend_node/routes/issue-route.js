@@ -15,9 +15,9 @@ router.get("/:issue", checkIssue, IssueController.getIssue);
 router.post("/:issue/join", checkToken, IssueController.joinIssue);
 router.post(
 	"/:issue/vote",
+	checkIssue,
 	checkToken,
 	checkVote,
-	checkIssue,
 	IssueController.voteIssue
 );
 
