@@ -79,3 +79,19 @@ Provide an interface to use the system.
 ### Multiple users view
 
 ![Multiple users](/img/multipleUsers.png)
+
+## Get up and running
+
+To run this code you need:
+
+- [Docker](https://www.docker.com/get-started) and [docker-compose](https://docs.docker.com/compose/install/) installed
+
+Then:
+
+- Clone this repo: `git clone git@github.com:mc-ireiser/dev_challenges.git`.
+- Run `docker-compose up`.
+
+Check if services are up and running:
+
+- Node backend in [localhost:8082](http://localhost:8082)
+- Frontend server in [localhost:8080](http://localhost:8080/)
