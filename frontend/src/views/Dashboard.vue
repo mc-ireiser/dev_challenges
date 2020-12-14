@@ -134,7 +134,7 @@
 							</div>
 							<transition>
 								<progress
-									v-show="loadigIssue"
+									v-show="loadingIssue"
 									class="progress is-small is-warning"
 									max="100"
 									>15%</progress
@@ -156,7 +156,7 @@
 							<div class="level-right">
 								<div class="level-item">
 									<button
-										@click="activeCreateIssueModal = !activeCreateIssueModal"
+										@click="changeCreateIssueModalStatus()"
 										class="button is-fullwidth is-info has-text-weight-bold"
 									>
 										Create issue
@@ -170,7 +170,7 @@
 								v-for="issue in issues"
 								:key="issue"
 								@click="
-									selectedIssue = issue;
+									setSelectedIssue(issue);
 									getIssue();
 								"
 								:class="{
@@ -183,7 +183,7 @@
 						</div>
 						<transition>
 							<progress
-								v-show="loadigIssues"
+								v-show="loadingIssues"
 								class="progress is-small is-info"
 								max="100"
 								>15%</progress
@@ -203,7 +203,7 @@
 			</div>
 		</div>
 		<!-- Modal -->
-		<div class="modal" :class="{ 'is-active': activeCreateIssueModal }">
+		<div class="modal" :class="{ 'is-active': activateCreateIssueModal }">
 			<div class="modal-background"></div>
 			<div class="modal-card">
 				<header class="modal-card-head">
@@ -232,7 +232,7 @@
 						Save
 					</button>
 					<button
-						@click="activeCreateIssueModal = !activeCreateIssueModal"
+						@click="changeCreateIssueModalStatus()"
 						class="button is-danger"
 					>
 						Cancel
@@ -244,6 +244,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import http from "../service/api";
 import lscache from "lscache";
 import * as bulmaToast from "bulma-toast";
@@ -255,20 +256,21 @@ export default {
 		return {
 			selectedVote: null,
 			validVotes: [1, 2, 3, 5, 8, 13, 20, 40, "?"],
-
-			issue: { members: [] },
-			issues: [],
-			newIssue: null,
-			selectedIssue: null,
-
-			loadigIssue: false,
-			loadigIssues: false,
-
-			activeCreateIssueModal: false
+			newIssue: null
 		};
 	},
 
 	computed: {
+		...mapState({
+			activateCreateIssueModal: state =>
+				state.issueState.activateCreateIssueModal,
+			loadingIssue: state => state.issueState.loadingIssue,
+			loadingIssues: state => state.issueState.loadingIssues,
+			issues: state => state.issueState.issues,
+			issue: state => state.issueState.issue,
+			selectedIssue: state => state.issueState.selectedIssue
+		}),
+
 		storedName() {
 			return lscache.get("userName");
 		},
@@ -304,30 +306,39 @@ export default {
 	},
 
 	methods: {
+		...mapMutations({
+			changeCreateIssueModalStatus: "issueState/changeCreateIssueModalStatus",
+			changeLoadingIssueStatus: "issueState/changeLoadingIssueStatus",
+			changeLoadingIssuesStatus: "issueState/changeLoadingIssuesStatus",
+			setIssues: "issueState/setIssues",
+			setIssue: "issueState/setIssue",
+			setSelectedIssue: "issueState/setSelectedIssue"
+		}),
+
 		logout() {
 			lscache.flush();
 			location.reload();
 		},
 
 		async getIssues() {
-			this.loadigIssues = true;
+			this.changeLoadingIssuesStatus();
 			const response = await http.get("/issue/all");
-			this.loadigIssues = false;
+			this.changeLoadingIssuesStatus();
 
 			if (response.ok) {
-				this.issues = response.data.issues;
+				this.setIssues(response.data.issues);
 			} else {
 				console.error(response.data.message);
 			}
 		},
 
 		async getIssue() {
-			this.loadigIssue = true;
+			this.changeLoadingIssueStatus();
 			const response = await http.get(`/issue/${this.selectedIssue}`);
-			this.loadigIssue = false;
+			this.changeLoadingIssueStatus();
 
 			if (response.ok) {
-				this.issue = response.data.issue;
+				this.setIssue(response.data.issue);
 				this.selectedVote = this.youOnIssue.value || null;
 			} else {
 				console.error(response.data.message);
@@ -349,7 +360,7 @@ export default {
 			if (response.ok) {
 				this.getIssues();
 				this.newIssue = null;
-				this.activeCreateIssueModal = false;
+				this.activateCreateIssueModal = false;
 				bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 
 				const data = await JSON.stringify({
