@@ -95,3 +95,29 @@ Check if services are up and running:
 
 - Node backend in [localhost:8082](http://localhost:8082)
 - Frontend server in [localhost:8080](http://localhost:8080/)
+
+## For DEV
+
+To develop modify the services commands in the `docker-compose.yml` file with the following instructions:
+
+services:
+backend_node:
+command:
+
+```bash
+bash -c "
+  npm run dev
+"
+```
+
+services:
+frontend:
+command:
+
+```bash
+bash -c "
+  npm run serve
+"
+```
+
+These changes provide a better development experience by avoiding compiling code for production.
