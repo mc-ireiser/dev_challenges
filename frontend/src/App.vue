@@ -9,7 +9,7 @@ import lscache from "lscache";
 
 export default {
 	async mounted() {
-		const token = await lscache.get("token"); // localStorage.getItem("token");
+		const token = await lscache.get("token");
 		if (!token) {
 			this.$router.replace("registry", () => {});
 		} else {
