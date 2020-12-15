@@ -2,12 +2,13 @@ export const issueState = {
 	namespaced: true,
 	state: () => ({
 		loadingIssue: false,
-		loadigIssues: false,
+		loadingIssues: false,
 		activateCreateIssueModal: false,
 		issues: [],
 		issue: { members: [] },
 		selectedIssue: null
 	}),
+
 	mutations: {
 		changeCreateIssueModalStatus(state) {
 			state.activateCreateIssueModal = !state.activateCreateIssueModal;
@@ -33,6 +34,8 @@ export const issueState = {
 			state.selectedIssue = payload;
 		}
 	},
+
 	actions: {},
+
 	getters: {}
 };
