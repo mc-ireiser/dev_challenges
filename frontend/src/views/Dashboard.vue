@@ -63,7 +63,7 @@ const socket = new WebSocket("ws://localhost:8082");
 export default {
 	data() {
 		return {
-			socket
+			socket,
 		};
 	},
 
@@ -71,21 +71,25 @@ export default {
 		issuesComponent,
 		voteComponent,
 		resetDbComponet,
-		modalCreateUserComponent
+		modalCreateUserComponent,
 	},
 
 	computed: {
 		...mapState({
-			activateCreateIssueModal: state =>
+			activateCreateIssueModal: (state) =>
 				state.issueState.activateCreateIssueModal,
-			issues: state => state.issueState.issues,
-			issue: state => state.issueState.issue,
-			selectedIssue: state => state.issueState.selectedIssue
+			issues: (state) => state.issueState.issues,
+			issue: (state) => state.issueState.issue,
+			selectedIssue: (state) => state.issueState.selectedIssue,
 		}),
 
 		storedName() {
 			return lscache.get("user_name");
-		}
+		},
+
+		reference() {
+			return lscache.get("reference");
+		},
 	},
 
 	mounted() {
@@ -110,16 +114,16 @@ export default {
 			const self = this;
 			const data = JSON.stringify({
 				event: "conection",
-				name: this.storedName
+				name: this.storedName,
 			});
 
 			// Connection opened
-			socket.addEventListener("open", function() {
+			socket.addEventListener("open", function () {
 				socket.send(data);
 			});
 
 			// Listen for messages
-			socket.addEventListener("message", async function(event) {
+			socket.addEventListener("message", async function (event) {
 				const response = JSON.parse(event.data);
 
 				if (response.event === "create:issue") {
@@ -127,7 +131,7 @@ export default {
 				}
 
 				if (response.event === "join:issue") {
-					if (response.name !== self.storedName) {
+					if (response.reference !== self.reference) {
 						const message = `${response.name} has joined joined the issue ${response.issue}`;
 						bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 					}
@@ -138,7 +142,7 @@ export default {
 				}
 
 				if (response.event === "vote:issue") {
-					if (response.name !== self.storedName) {
+					if (response.reference !== self.reference) {
 						const message = `${response.name} has voted on the issue ${response.issue}`;
 						bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 					}
@@ -155,10 +159,10 @@ export default {
 			});
 
 			// Handle errors
-			socket.addEventListener("error", function(event) {
+			socket.addEventListener("error", function (event) {
 				console.log("WebSocket error observed:", event);
 			});
-		}
-	}
+		},
+	},
 };
 </script>

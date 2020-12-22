@@ -171,6 +171,10 @@ export default {
 			return this.issueMembersId.some(
 				element => element === this.storedUserName
 			);
+		},
+
+		reference() {
+			return lscache.get("reference");
 		}
 	},
 
@@ -212,7 +216,8 @@ export default {
 				const data = JSON.stringify({
 					event: "join:issue",
 					name: this.storedName,
-					issue: this.selectedIssue
+					issue: this.selectedIssue,
+					reference: this.reference
 				});
 
 				this.socket.send(data);
@@ -244,7 +249,8 @@ export default {
 				const data = JSON.stringify({
 					event: "vote:issue",
 					name: this.storedName,
-					issue: this.selectedIssue
+					issue: this.selectedIssue,
+					reference: this.reference
 				});
 
 				this.socket.send(data);

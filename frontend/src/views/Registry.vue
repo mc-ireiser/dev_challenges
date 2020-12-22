@@ -88,6 +88,7 @@
 <script>
 import http from "../service/api";
 import lscache from "lscache";
+import { v4 as uuidv4 } from "uuid";
 import * as bulmaToast from "bulma-toast";
 
 export default {
@@ -123,11 +124,12 @@ export default {
 		async processResponse(response) {
 			if (response.ok) {
 				const data = response.data;
-
 				const userName = this.register ? this.userName : data.userName;
+				const reference = uuidv4();
 
 				lscache.set("user_name", data.name, 3600000);
 				lscache.set("userName", userName, 3600000);
+				lscache.set("reference", reference, 3600000);
 
 				http.setHeaders({
 					userName
