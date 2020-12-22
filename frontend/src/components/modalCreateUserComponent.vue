@@ -95,7 +95,7 @@ export default {
 				this.newIssue = null;
 				bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 
-				const data = await JSON.stringify({
+				const data = JSON.stringify({
 					event: "create:issue",
 					name: this.storedName
 				});

@@ -112,7 +112,7 @@ export default {
 
 		async wsS() {
 			const self = this;
-			const data = await JSON.stringify({
+			const data = JSON.stringify({
 				event: "conection",
 				name: this.storedName
 			});
@@ -124,7 +124,7 @@ export default {
 
 			// Listen for messages
 			socket.addEventListener("message", async function(event) {
-				const response = await JSON.parse(event.data);
+				const response = JSON.parse(event.data);
 
 				if (response.event === "create:issue") {
 					self.getIssues();

@@ -25,7 +25,7 @@ export default {
 			if (response.ok) {
 				bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 
-				const data = await JSON.stringify({
+				const data = JSON.stringify({
 					event: "reset:db"
 				});
 

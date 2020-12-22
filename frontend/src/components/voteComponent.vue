@@ -207,7 +207,7 @@ export default {
 				this.getIssue();
 				bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 
-				const data = await JSON.stringify({
+				const data = JSON.stringify({
 					event: "join:issue",
 					name: this.storedName,
 					issue: this.selectedIssue,
@@ -240,7 +240,7 @@ export default {
 				this.getIssue();
 				bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 
-				const data = await JSON.stringify({
+				const data = JSON.stringify({
 					event: "vote:issue",
 					name: this.storedName,
 					issue: this.selectedIssue,
