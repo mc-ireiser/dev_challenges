@@ -2,17 +2,17 @@ const redisClient = require("../helpers/redis");
 const Joi = require("joi");
 
 exports.loginUser = async (req, res, next) => {
-	const token = req.body.token;
-	const tokenIsValid = Joi.string().required().validate(token);
+	const userName = req.body.userName;
+	const userNameIsValid = Joi.string().required().validate(userName);
 
-	if (!tokenIsValid.value) {
+	if (!userNameIsValid.value) {
 		return res.status(400).json({
 			message: "Username required",
 		});
 	}
 
 	try {
-		const result = await redisClient.get(token);
+		const result = await redisClient.get(userName);
 		if (result) {
 			res.status(200).json({
 				name: result,
@@ -31,20 +31,20 @@ exports.loginUser = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
 	const name = req.body.name;
-	const token = req.body.token;
+	const userName = req.body.userName;
 
 	const nameIsValid = Joi.string().required().validate(name);
-	const tokenIsValid = Joi.string().required().validate(token);
+	const userNameIsValid = Joi.string().required().validate(userName);
 
-	if (!tokenIsValid.value || !nameIsValid.value) {
+	if (!userNameIsValid.value || !nameIsValid.value) {
 		return res.status(400).json({
 			message: "All fields are required",
 		});
 	}
 
-	const tokenExists = await redisClient.exists(token);
+	const userNameExists = await redisClient.exists(userName);
 
-	if (tokenExists) {
+	if (userNameExists) {
 		res.status(409).json({
 			message: "User already exists",
 		});
@@ -52,11 +52,11 @@ exports.createUser = async (req, res, next) => {
 	}
 
 	try {
-		const result = await redisClient.set(token, name);
+		const result = await redisClient.set(userName, name);
 		if (result === "OK") {
 			res.status(201).json({
 				name,
-				token,
+				userName,
 				result,
 			});
 		} else {

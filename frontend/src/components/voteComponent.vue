@@ -144,17 +144,17 @@ export default {
 		}),
 
 		storedName() {
-			return lscache.get("userName");
+			return lscache.get("user_name");
 		},
 
-		storedToken() {
-			return lscache.get("token");
+		storedUserName() {
+			return lscache.get("userName");
 		},
 
 		youOnIssue() {
 			return (
 				this.issue.members.filter(element => {
-					return element.id === this.storedToken;
+					return element.id === this.storedUserName;
 				})[0] || []
 			);
 		},
@@ -168,7 +168,9 @@ export default {
 		},
 
 		isJoined() {
-			return this.issueMembersId.some(element => element === this.storedToken);
+			return this.issueMembersId.some(
+				element => element === this.storedUserName
+			);
 		}
 	},
 
@@ -192,13 +194,13 @@ export default {
 		},
 
 		async joinIssue() {
-			const token = this.storedToken;
+			const userName = this.storedUserName;
 			const name = this.storedName;
 
 			const response = await http.post(
 				`/issue/${this.selectedIssue}/join`,
 				{ name },
-				{ headers: { token } }
+				{ headers: { userName } }
 			);
 
 			const message = response.data.message;
@@ -224,13 +226,13 @@ export default {
 		},
 
 		async voteIssue() {
-			const token = this.storedToken;
+			const userName = this.storedUserName;
 			const value = this.selectedVote;
 
 			const response = await http.post(
 				`/issue/${this.selectedIssue}/vote`,
 				{ value },
-				{ headers: { token } }
+				{ headers: { userName } }
 			);
 
 			const message = response.data.message;

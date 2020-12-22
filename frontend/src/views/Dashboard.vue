@@ -84,11 +84,7 @@ export default {
 		}),
 
 		storedName() {
-			return lscache.get("userName");
-		},
-
-		storedToken() {
-			return lscache.get("token");
+			return lscache.get("user_name");
 		}
 	},
 
@@ -153,7 +149,7 @@ export default {
 				}
 
 				if (response.event === "reset:db") {
-					lscache.remove("token");
+					lscache.remove("userName");
 					location.reload();
 				}
 			});

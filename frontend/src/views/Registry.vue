@@ -100,20 +100,11 @@ export default {
 		};
 	},
 
-	computed: {
-		storedName() {
-			return lscache.get("userName");
-		},
-		storedToken() {
-			return lscache.get("token");
-		}
-	},
-
 	methods: {
 		async loginUser() {
 			this.loading = true;
 			const response = await http.post("/user/login", {
-				token: this.userName
+				userName: this.userName
 			});
 
 			this.processResponse(response);
@@ -123,7 +114,7 @@ export default {
 			this.loading = true;
 			const response = await http.post("/user", {
 				name: this.name,
-				token: this.userName
+				userName: this.userName
 			});
 
 			this.processResponse(response);
@@ -133,13 +124,13 @@ export default {
 			if (response.ok) {
 				const data = response.data;
 
-				const token = this.register ? this.userName : data.token;
+				const userName = this.register ? this.userName : data.userName;
 
-				lscache.set("userName", data.name, 3600000);
-				lscache.set("token", token, 3600000);
+				lscache.set("user_name", data.name, 3600000);
+				lscache.set("userName", userName, 3600000);
 
 				http.setHeaders({
-					token
+					userName
 				});
 
 				bulmaToast.toast({ message: `Hi, ${data.name}`, type: "is-primary" });

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // middleware
-const checkToken = require("../middleware/checkToken");
+const checkUserName = require("../middleware/checkUserName");
 const checkIssue = require("../middleware/checkIssue");
 const checkVote = require("../middleware/checkVote");
 
@@ -12,11 +12,11 @@ const IssueController = require("../controllers/issue-controller");
 // Routes
 router.get("/all", IssueController.getAllIssue);
 router.get("/:issue", checkIssue, IssueController.getIssue);
-router.post("/:issue/join", checkToken, IssueController.joinIssue);
+router.post("/:issue/join", checkUserName, IssueController.joinIssue);
 router.post(
 	"/:issue/vote",
 	checkIssue,
-	checkToken,
+	checkUserName,
 	checkVote,
 	IssueController.voteIssue
 );

@@ -3,29 +3,31 @@ const Joi = require("joi");
 
 // joinIssue
 exports.joinIssue = async (req, res, next) => {
-	const token = req.headers.token;
 	const issueNumber = req.params.issue;
+	const userName = req.headers.username;
 
 	try {
-		const userName = await redisClient.get(token);
+		const name = await redisClient.get(userName);
 
-		if (!userName) {
+		if (!name) {
 			return res.status(400).json({
 				message: "Username not found",
 			});
 		}
 
 		const newMember = {
-			id: token,
-			name: userName,
+			id: userName,
+			name: name,
 			status: "waiting",
 			value: 0,
 		};
 
+		console.log(req.body, newMember);
+
 		const issueExist = await redisClient.exists(issueNumber);
 
 		if (issueExist) {
-			joinToExistingIssue(res, token, issueNumber, newMember);
+			joinToExistingIssue(res, userName, issueNumber, newMember);
 		} else {
 			joinToNewIssue(res, issueNumber, newMember);
 		}
@@ -36,12 +38,12 @@ exports.joinIssue = async (req, res, next) => {
 	}
 };
 
-async function joinToExistingIssue(res, token, issueNumber, newMember) {
+async function joinToExistingIssue(res, userName, issueNumber, newMember) {
 	try {
 		const issueMembersString = await redisClient.hmget(issueNumber, "members");
 		let issueMembers = JSON.parse(issueMembersString);
 
-		let memberExist = issueMembers.some((element) => element.id === token);
+		let memberExist = issueMembers.some((element) => element.id === userName);
 
 		if (memberExist) {
 			res.json({
@@ -72,7 +74,7 @@ async function joinToExistingIssue(res, token, issueNumber, newMember) {
 
 async function joinToNewIssue(res, issueNumber, newMember) {
 	try {
-		const members = await JSON.stringify([newMember]);
+		const members = JSON.stringify([newMember]);
 		const result = await redisClient.hmset(
 			issueNumber,
 			"status",
@@ -161,7 +163,7 @@ exports.getAllIssue = async (req, res, next) => {
 
 // voteIssue
 exports.voteIssue = async (req, res, next) => {
-	const token = req.headers.token;
+	const userName = req.headers.username;
 	const issueNumber = req.params.issue;
 
 	try {
@@ -184,7 +186,14 @@ exports.voteIssue = async (req, res, next) => {
 			});
 			return;
 		} else {
-			issueIsNotVoted(req, res, token, issueNumber, issueArray, issueMembers);
+			issueIsNotVoted(
+				req,
+				res,
+				userName,
+				issueNumber,
+				issueArray,
+				issueMembers
+			);
 		}
 	} catch (error) {
 		res.status(500).json({
@@ -196,7 +205,7 @@ exports.voteIssue = async (req, res, next) => {
 async function issueIsNotVoted(
 	req,
 	res,
-	token,
+	userName,
 	issueNumber,
 	issueArray,
 	issueMembers
@@ -204,7 +213,7 @@ async function issueIsNotVoted(
 	const voteValue = req.body.value;
 	const pass = voteValue === "?" ? true : false;
 
-	let member = issueMembers.filter((element) => element.id === token)[0];
+	let member = issueMembers.filter((element) => element.id === userName)[0];
 
 	if (member) {
 		if (member.status === "waiting") {
@@ -221,7 +230,7 @@ async function issueIsNotVoted(
 			});
 
 			try {
-				issueArray[1] = await JSON.stringify(issueMembers);
+				issueArray[1] = JSON.stringify(issueMembers);
 
 				let status = issueMembers.every((element) =>
 					["voted", "passed"].includes(element.status)
