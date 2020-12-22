@@ -39,7 +39,7 @@ exports.joinIssue = async (req, res, next) => {
 async function joinToExistingIssue(res, token, issueNumber, newMember) {
 	try {
 		const issueMembersString = await redisClient.hmget(issueNumber, "members");
-		let issueMembers = await JSON.parse(issueMembersString);
+		let issueMembers = JSON.parse(issueMembersString);
 
 		let memberExist = issueMembers.some((element) => element.id === token);
 
@@ -107,7 +107,7 @@ exports.getIssue = async (req, res, next) => {
 			"avg"
 		);
 
-		const issueMembers = await JSON.parse(issueArray[1]);
+		const issueMembers = JSON.parse(issueArray[1]);
 
 		const isVoted = issueMembers.every((element) =>
 			["voted", "passed"].includes(element.status)
@@ -172,7 +172,7 @@ exports.voteIssue = async (req, res, next) => {
 			"avg"
 		);
 
-		const issueMembers = await JSON.parse(issueArray[1]);
+		const issueMembers = JSON.parse(issueArray[1]);
 
 		const isVoted = issueMembers.every((element) =>
 			["voted", "passed"].includes(element.status)
