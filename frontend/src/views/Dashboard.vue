@@ -131,7 +131,7 @@ export default {
 				}
 
 				if (response.event === "join:issue") {
-					if (response.token !== self.storedToken) {
+					if (response.name !== self.storedName) {
 						const message = `${response.name} has joined joined the issue ${response.issue}`;
 						bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 					}
@@ -142,7 +142,7 @@ export default {
 				}
 
 				if (response.event === "vote:issue") {
-					if (response.token !== self.storedToken) {
+					if (response.name !== self.storedName) {
 						const message = `${response.name} has voted on the issue ${response.issue}`;
 						bulmaToast.toast({ message, type: "is-primary", duration: 5000 });
 					}

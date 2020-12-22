@@ -210,8 +210,7 @@ export default {
 				const data = JSON.stringify({
 					event: "join:issue",
 					name: this.storedName,
-					issue: this.selectedIssue,
-					token
+					issue: this.selectedIssue
 				});
 
 				this.socket.send(data);
@@ -243,8 +242,7 @@ export default {
 				const data = JSON.stringify({
 					event: "vote:issue",
 					name: this.storedName,
-					issue: this.selectedIssue,
-					token
+					issue: this.selectedIssue
 				});
 
 				this.socket.send(data);
