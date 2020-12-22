@@ -14,7 +14,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "275c4847-2ec3-4328-937e-15964e778c89",
 								"exec": [
 									"pm.test(\"Status code is 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
@@ -27,11 +26,11 @@
 									"    pm.environment.set(\"name\", name);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Response have a  token\", function () {\r",
+									"pm.test(\"Response have a  userName\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    var token = jsonData.token;\r",
-									"    pm.expect(token).string\r",
-									"    pm.environment.set(\"token\", token);\r",
+									"    var userName = jsonData.userName;\r",
+									"    pm.expect(userName).string\r",
+									"    pm.environment.set(\"userName\", userName);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -40,9 +39,8 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "43a67bdc-b8fc-4519-a71c-c34648271bff",
 								"exec": [
-									"postman.setNextRequest(\"joinIssue\");"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -53,7 +51,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jesus Rodriguez\",\r\n    \"token\": \"ireiser\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Jesus Rodriguez\",\r\n    \"userName\": \"ireiser\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,7 +79,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"token\": \"ireiser\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"ireiser\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,8 +101,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "issue",
@@ -115,9 +112,8 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "6cb44151-79ef-42b4-8bc6-e6605913f4d8",
 								"exec": [
-									"postman.setNextRequest(\"allIssue\");"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -130,9 +126,10 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "{{token}}",
+								"key": "",
 								"value": "",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -165,9 +162,8 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3a942f55-371d-46e3-b439-16c0626d1cd9",
 								"exec": [
-									"postman.setNextRequest(\"getIssue\");"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -177,14 +173,14 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
-								"value": "{{token}}",
+								"key": "userName",
+								"value": "{{userName}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"{{name}}\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,9 +209,8 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b8735da4-9730-49d7-9174-e7c15939a052",
 								"exec": [
-									"postman.setNextRequest(\"null\");"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -225,8 +220,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
-								"value": "{{token}}",
+								"key": "userName",
+								"value": "{{userName}}",
 								"type": "text"
 							}
 						],
@@ -261,7 +256,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e6edc6d6-1030-43d4-9cc1-fac69c5d7c4f",
 								"exec": [
 									"postman.setNextRequest(\"voteIssue\");"
 								],
@@ -287,8 +281,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "resetDB",
@@ -312,8 +305,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "test",
@@ -324,7 +316,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5793d116-cc4e-447f-b039-789495ee081f",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -357,7 +348,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "27ecc0d3-7646-49ed-9dd8-3eda0967ac0d",
 								"exec": [
 									"pm.test(\"Should have a status code 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
@@ -370,11 +360,11 @@
 									"    pm.environment.set(\"name\", name);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Should have a token\", function () {\r",
+									"pm.test(\"Should have a userName\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    var token = jsonData.token;\r",
-									"    pm.expect(token).string\r",
-									"    pm.environment.set(\"token\", token);\r",
+									"    var userName = jsonData.userName;\r",
+									"    pm.expect(userName).string\r",
+									"    pm.environment.set(\"userName\", userName);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -383,7 +373,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2828b6b8-058d-4bbc-9d7f-eaa72c02495d",
 								"exec": [
 									""
 								],
@@ -396,7 +385,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jesus Rodriguez\",\r\n    \"token\": \"ireiser\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Jesus Rodriguez\",\r\n    \"userName\": \"ireiser\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -423,7 +412,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e06b56c0-2da2-4e99-945b-b32a8c82e456",
 								"exec": [
 									"pm.test(\"Should have a status code 400\", function () {\r",
 									"    pm.response.to.have.status(400);\r",
@@ -441,7 +429,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "44057e65-5a31-4f19-bd05-cb440358e66d",
 								"exec": [
 									""
 								],
@@ -454,7 +441,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"\",\r\n    \"token\": \"ireiser\"\r\n}",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"userName\": \"ireiser\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -481,7 +468,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "4380404a-fae3-49f7-a2af-1ba6eff094c9",
 								"exec": [
 									""
 								],
@@ -491,7 +477,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6a536524-762b-4bac-9ea5-c066ad332be3",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -531,7 +516,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "62d7b316-4ce8-4b9f-99e0-52e0d95314a0",
 								"exec": [
 									""
 								],
@@ -541,7 +525,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dd8dc747-fb37-4259-bc1d-ae6cd3b285d1",
 								"exec": [
 									"pm.test(\"Should have a status code 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
@@ -564,9 +547,9 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "{{token}}",
-								"type": "text",
-								"value": ""
+								"key": "userName",
+								"value": "{{userName}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -599,7 +582,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7081c07f-ea51-4d47-b9de-e29d9c128d9b",
 								"exec": [
 									""
 								],
@@ -609,7 +591,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2496b116-7639-4271-ae9e-a18d7daf2de4",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -629,8 +610,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
-								"value": "{{token}}",
+								"key": "userName",
+								"value": "{{userName}}",
 								"type": "text"
 							}
 						],
@@ -665,7 +646,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a71cbc41-7536-4196-988f-5661b6548f4a",
 								"exec": [
 									""
 								],
@@ -675,7 +655,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "25dd6fc9-b415-4836-8eb8-791d5b7ccbc4",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -695,8 +674,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
-								"value": "{{token}}",
+								"key": "userName",
+								"value": "{{userName}}",
 								"type": "text"
 							}
 						],
@@ -731,7 +710,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e9b31766-5f74-4aea-b605-ff17085c2163",
 								"exec": [
 									""
 								],
@@ -741,7 +719,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8a7634a0-6448-4fa6-90ff-858474f0a5d7",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -781,7 +758,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a591877d-9868-4e50-9361-2dd99c0c9453",
 								"exec": [
 									""
 								],
@@ -791,7 +767,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3f6a7864-ede6-4075-bc74-2b69ca5e71fd",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -814,13 +789,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "{{token}}",
-								"type": "text",
-								"value": ""
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -851,7 +820,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "be75839c-9e41-4e4a-a4bb-5d6fb435a610",
 								"exec": [
 									""
 								],
@@ -861,7 +829,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3d164431-e828-41f4-ae3f-000189426a54",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -881,9 +848,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
+								"key": "userName",
 								"type": "text",
-								"value": "{{token}}"
+								"value": "{{userName}}"
 							}
 						],
 						"body": {
@@ -917,7 +884,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "47fa9f20-aebe-4323-92fc-fef7a3e7752f",
 								"exec": [
 									""
 								],
@@ -927,7 +893,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5f650000-1c15-4bf5-839f-ba12d8a47b41",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -947,9 +912,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
+								"key": "userName",
 								"type": "text",
-								"value": "{{token}}"
+								"value": "{{userName}}"
 							}
 						],
 						"body": {
@@ -983,7 +948,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a74e71f7-ea56-42c1-b793-ec07bcd68a35",
 								"exec": [
 									""
 								],
@@ -993,7 +957,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7ed3f520-1d25-464a-a342-a43f069568da",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1018,13 +981,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "{{token}}",
-								"type": "text",
-								"value": ""
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -1055,7 +1012,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5369152b-ddb6-462a-87b9-46e8e4f2d987",
 								"exec": [
 									"pm.test(\"Should have a status code 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
@@ -1068,11 +1024,11 @@
 									"    pm.environment.set(\"name\", name);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Should have a token\", function () {\r",
+									"pm.test(\"Should have a userName\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    var token = jsonData.token;\r",
-									"    pm.expect(token).string\r",
-									"    pm.environment.set(\"token\", token);\r",
+									"    var userName = jsonData.userName;\r",
+									"    pm.expect(userName).string\r",
+									"    pm.environment.set(\"userName\", userName);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1081,7 +1037,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "55ef9b2a-30a2-4211-a43e-0989fea21dee",
 								"exec": [
 									""
 								],
@@ -1094,7 +1049,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Test Name\",\r\n    \"token\": \"test\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Test Name\",\r\n    \"userName\": \"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1121,7 +1076,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cb43a035-13e2-4170-931d-f992c24572cb",
 								"exec": [
 									""
 								],
@@ -1131,7 +1085,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "98300d68-fb2f-450e-bfbd-34828e561484",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1151,9 +1104,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
+								"key": "userName",
 								"type": "text",
-								"value": "{{token}}"
+								"value": "{{userName}}"
 							}
 						],
 						"body": {
@@ -1187,7 +1140,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9a9491b3-cf26-430a-89c2-958744d9c2c9",
 								"exec": [
 									""
 								],
@@ -1197,7 +1149,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "59a42b74-2e17-42c6-aae3-438f1a982613",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1217,9 +1168,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
+								"key": "userName",
 								"type": "text",
-								"value": "{{token}}"
+								"value": "{{userName}}"
 							}
 						],
 						"body": {
@@ -1253,7 +1204,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "fb02749b-7d4f-49e7-8843-115ad95e388a",
 								"exec": [
 									""
 								],
@@ -1263,7 +1213,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d28d3cdd-b40c-4a05-9a83-aa1a8013f4a7",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1288,13 +1237,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "{{token}}",
-								"type": "text",
-								"value": ""
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -1325,7 +1268,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "772deead-f930-405f-ab3c-fb09beb96a08",
 								"exec": [
 									"pm.test(\"Should have a status code 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
@@ -1338,11 +1280,11 @@
 									"    pm.environment.set(\"name\", name);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Should have a token\", function () {\r",
+									"pm.test(\"Should have a userName\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    var token = jsonData.token;\r",
-									"    pm.expect(token).string\r",
-									"    pm.environment.set(\"token\", token);\r",
+									"    var userName = jsonData.userName;\r",
+									"    pm.expect(userName).string\r",
+									"    pm.environment.set(\"userName\", userName);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1351,7 +1293,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b4228dc7-bb8f-4587-a7cd-a240013a0ced",
 								"exec": [
 									""
 								],
@@ -1364,7 +1305,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Test Name 2\",\r\n    \"token\": \"test1\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Test Name 2\",\r\n    \"userName\": \"test1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1391,7 +1332,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "10a4ddbe-cb9d-402f-bea0-db0a5416d98e",
 								"exec": [
 									""
 								],
@@ -1401,7 +1341,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6da1c4e8-59ca-4fd4-b239-4dced2360b18",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1421,9 +1360,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
+								"key": "userName",
 								"type": "text",
-								"value": "{{token}}"
+								"value": "{{userName}}"
 							}
 						],
 						"body": {
@@ -1457,7 +1396,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a7af6eaa-1236-4007-9741-540fbbb0dc37",
 								"exec": [
 									""
 								],
@@ -1467,7 +1405,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d1757164-2f56-488f-8989-beebb4c37c67",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1487,9 +1424,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "token",
+								"key": "userName",
 								"type": "text",
-								"value": "{{token}}"
+								"value": "{{userName}}"
 							}
 						],
 						"body": {
@@ -1523,7 +1460,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ff858ce4-2e8a-47d5-8421-d04e1ecd5171",
 								"exec": [
 									""
 								],
@@ -1533,7 +1469,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "db53e9ec-fc84-43fc-ae4c-65c953519f69",
 								"exec": [
 									"pm.test(\"Should have a status code 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1558,13 +1493,7 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "{{token}}",
-								"type": "text",
-								"value": ""
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -1589,9 +1518,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
