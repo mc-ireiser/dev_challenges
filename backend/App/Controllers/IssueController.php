@@ -159,17 +159,13 @@ class IssueController
 
         try {
             $redisConnection = new RedisConnector();
-            $issueMembers = $redisConnection->connection()->hMGet($issueNumber, ['status', 'members', 'avg']);
-            $issueMembers = json_decode($issueMembers['members']);
-            $isVoted = false;
+            $issueData = $redisConnection->connection()->hMGet($issueNumber, ['status', 'members', 'avg']);
+            $issueMembers = json_decode($issueData['members']);
+            $isVoted = $issueData['status'] == 'reveal';
             $isMember = false;
             $memberStatus = "";
 
             foreach ($issueMembers as $key => $object) {
-                if ($object->status == 'voted' || $object->status == 'passed') {
-                    $isVoted = true;
-                }
-
                 if ($object->id == $userName) {
                     $isMember = true;
                     $memberStatus = $object->status;
@@ -184,6 +180,14 @@ class IssueController
                     ->withStatus(200);
             }
 
+            if($isVoted) {
+                $jsonResponse = json_encode(['message'=> 'The issue has already been voted']);
+                $response->getBody()->write("$jsonResponse");
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(200);
+            }
+
             if ($memberStatus != 'waiting') {
                 $jsonResponse = json_encode(['message'=> 'The user already voted on this issue']);
                 $response->getBody()->write("$jsonResponse");
@@ -192,15 +196,9 @@ class IssueController
                     ->withStatus(200);
             }
 
-            if($isVoted) {
-                $jsonResponse = json_encode(['message'=> 'The issue has already been voted']);
-                $response->getBody()->write("$jsonResponse");
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(200);
-            }
-            
             // TODO: VOTE ISSUE
+
+
 
             $jsonResponse = json_encode(['message'=> 'The vote was counted']);
             $response->getBody()->write("$jsonResponse");
