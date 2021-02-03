@@ -69,6 +69,7 @@ Provide an interface to use the system.
 
 ## My solution to the challenge
 
+- PHP
 - Node.js
 - Vue.js
 
@@ -105,9 +106,7 @@ backend_node:
 command:
 
 ```bash
-bash -c "
-  npm run dev
-"
+bash -c "npm i && npm run dev"
 ```
 
 services:
@@ -115,9 +114,7 @@ frontend:
 command:
 
 ```bash
-bash -c "
-  npm run serve
-"
+bash -c "npm i && npm run serve"
 ```
 
 These changes provide a better development experience by avoiding compiling code for production.
