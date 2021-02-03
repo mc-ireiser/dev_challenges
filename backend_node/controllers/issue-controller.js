@@ -22,8 +22,6 @@ exports.joinIssue = async (req, res, next) => {
 			value: 0,
 		};
 
-		console.log(req.body, newMember);
-
 		const issueExist = await redisClient.exists(issueNumber);
 
 		if (issueExist) {
@@ -108,6 +106,8 @@ exports.getIssue = async (req, res, next) => {
 			"members",
 			"avg"
 		);
+
+		console.log(issueNumber, issueArray);
 
 		const issueMembers = JSON.parse(issueArray[1]);
 
