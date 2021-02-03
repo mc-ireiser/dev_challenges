@@ -23,7 +23,7 @@ return function (App $app){
         $issueGroup->get('/all', [IssueController::class, 'getAll'])->setName('get-all-issue');
         $issueGroup->get('/{issue}', [IssueController::class, 'getOne'])->setName('get-one-issue')->add(new IssueExists())->add(new HaveIssueParam());
         $issueGroup->post('/{issue}/join', [IssueController::class, 'join'])->setName('join-issue')->add(new UserNameExists())->add(new HaveUserNameHeader())->add(new HaveIssueParam());
-//        $issueGroup->post('/{issue}/vote', [IssueController::class, 'vote'])->setName('vote-issue')->add(new UserNameExists())->add(new HaveUserNameHeader())->add(new HaveIssueParam());
+        $issueGroup->post('/{issue}/vote', [IssueController::class, 'vote'])->setName('vote-issue')->add(new UserNameExists())->add(new HaveUserNameHeader())->add(new IssueExists())->add(new HaveIssueParam());
     });
 
     $app->get('/reset', [DbController::class, 'reset'])->setName('reset-db');

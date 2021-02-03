@@ -159,29 +159,54 @@ class IssueController
 
         try {
             $redisConnection = new RedisConnector();
-            $issueExists = $redisConnection->connection()->exists($issueNumber);
+            $issueMembers = $redisConnection->connection()->hMGet($issueNumber, ['status', 'members', 'avg']);
+            $issueMembers = json_decode($issueMembers['members']);
+            $isVoted = false;
+            $isMember = false;
+            $memberStatus = "";
 
-            if ($issueExists) {
-                $issueMembers = $redisConnection->connection()->hMGet($issueNumber, ['status', 'members', 'avg']);
-                $issueMembers = json_decode($issueMembers['members']);
-
-                $isVoted = false;
-
-                foreach ($issueMembers as $key => $object) {
-                    if ($object->status == 'voted' || $object->status == 'passed') {
-                        $isVoted = true;
-                    }
+            foreach ($issueMembers as $key => $object) {
+                if ($object->status == 'voted' || $object->status == 'passed') {
+                    $isVoted = true;
                 }
 
-                if($isVoted) {
-                    $jsonResponse = json_encode(['message'=> 'Database error' . $e]);
-                    $response->getBody()->write("$jsonResponse");
-                    return $response
-                        ->withHeader('Content-Type', 'application/json')
-                        ->withStatus(200);
+                if ($object->id == $userName) {
+                    $isMember = true;
+                    $memberStatus = $object->status;
                 }
-
             }
+
+            if (!$isMember) {
+                $jsonResponse = json_encode(['message'=> 'The user is not joined to this issue']);
+                $response->getBody()->write("$jsonResponse");
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(200);
+            }
+
+            if ($memberStatus != 'waiting') {
+                $jsonResponse = json_encode(['message'=> 'The user already voted on this issue']);
+                $response->getBody()->write("$jsonResponse");
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(200);
+            }
+
+            if($isVoted) {
+                $jsonResponse = json_encode(['message'=> 'The issue has already been voted']);
+                $response->getBody()->write("$jsonResponse");
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(200);
+            }
+            
+            // TODO: VOTE ISSUE
+
+            $jsonResponse = json_encode(['message'=> 'The vote was counted']);
+            $response->getBody()->write("$jsonResponse");
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus(200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error' . $e]);
