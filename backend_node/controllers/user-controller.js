@@ -2,7 +2,7 @@ const redisClient = require("../helpers/redis");
 const Joi = require("joi");
 
 exports.loginUser = async (req, res, next) => {
-	const userName = req.body.userName;
+	const userName = req.headers.username;
 	const userNameIsValid = Joi.string().required().validate(userName);
 
 	if (!userNameIsValid.value) {

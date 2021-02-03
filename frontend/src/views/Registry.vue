@@ -104,9 +104,11 @@ export default {
 	methods: {
 		async loginUser() {
 			this.loading = true;
-			const response = await http.post("/user/login", {
-				userName: this.userName
-			});
+			const response = await http.post(
+				"/user/login",
+				{},
+				{ headers: { userName: this.userName } }
+			);
 
 			this.processResponse(response);
 		},
