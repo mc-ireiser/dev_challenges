@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Controllers\Utils\ReturnResponse;
 use App\RedisConnector;
 use RedisException;
 
@@ -23,29 +24,16 @@ class UserController
 
             if ($userExists) {
                 $jsonResponse = json_encode(['message'=> 'User already exists']);
-                $response->getBody()->write("$jsonResponse");
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(409);
+                return ReturnResponse::send($response, $jsonResponse, 409);
             }
 
             $redisConnection->connection()->set($userName, $name);
-            $jsonResponse = json_encode([
-                'name' => $name,
-                'userName' => $userName
-            ]);
-            $response->getBody()->write("$jsonResponse");
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(201);
+            $jsonResponse = json_encode(['name' => $name,  'userName' => $userName]);
+            return ReturnResponse::send($response, $jsonResponse, 201);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error: ' . $e]);
-            $response->getBody()->write("$jsonResponse");
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500);
+            return ReturnResponse::send($response, $jsonResponse, 500);
         }
     }
 
@@ -59,26 +47,16 @@ class UserController
 
             if (!$userExists) {
                 $jsonResponse = json_encode(['message'=> 'User was not found']);
-                $response->getBody()->write("$jsonResponse");
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(404);
+                return ReturnResponse::send($response, $jsonResponse, 404);
             }
 
             $resultGetData = $redisConnection->connection()->get($userName[0]);
             $jsonResponse = json_encode(['name' => $resultGetData]);
-            $response->getBody()->write("$jsonResponse");
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200);
+            return ReturnResponse::send($response, $jsonResponse, 200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error: ', $e]);
-            $response->getBody()->write("$jsonResponse");
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500);
+            return ReturnResponse::send($response, $jsonResponse, 500);
         }
     }
 }

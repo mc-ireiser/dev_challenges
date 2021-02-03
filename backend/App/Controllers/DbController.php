@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Controllers\Utils\ReturnResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\RedisConnector;
@@ -17,17 +18,11 @@ class DbController
             $redisConnection = new RedisConnector();
             $redisConnection->connection()->flushAll();
             $jsonResponse = json_encode(['message'=> 'The database was deleted']);
-            $response->getBody()->write("$jsonResponse");
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200);
+            return ReturnResponse::send($response, $jsonResponse, 200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error' . $e]);
-            $response->getBody()->write("$jsonResponse");
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500);
+            return ReturnResponse::send($response, $jsonResponse, 500);
         }
     }
 }
