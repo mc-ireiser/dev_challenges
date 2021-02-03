@@ -157,18 +157,32 @@ class IssueController
         $userName = $request->getHeader('userName');
         $userName = $userName[0];
 
+        $requestBody = $request->getParsedBody();
+        $voteValue = $requestBody['value'];
+        $votePassed = $voteValue == '?';
+
         try {
             $redisConnection = new RedisConnector();
             $issueData = $redisConnection->connection()->hMGet($issueNumber, ['status', 'members', 'avg']);
             $issueMembers = json_decode($issueData['members']);
+
             $isVoted = $issueData['status'] == 'reveal';
             $isMember = false;
             $memberStatus = "";
+            $avgSum = 0;
+            $membersVoteCount = 0;
 
             foreach ($issueMembers as $key => $object) {
                 if ($object->id == $userName) {
                     $isMember = true;
                     $memberStatus = $object->status;
+                    $object->status = $votePassed ? 'passed' : 'voted';
+                    $object->value = $votePassed ? 0 : $voteValue;
+                }
+
+                if ($object->status == 'voted') {
+                    $avgSum += $object->value;
+                    $membersVoteCount++;
                 }
             }
 
@@ -196,9 +210,16 @@ class IssueController
                     ->withStatus(200);
             }
 
-            // TODO: VOTE ISSUE
+            $issueStatus = true;
+            foreach ($issueMembers as $key => $object) {
+                if ($object->status == 'waiting') {
+                    $issueStatus = false;
+                }
+            }
 
-
+            $issueStatus = $issueStatus ? 'reveal' : 'voting';
+            $issueMembersArray = json_encode($issueMembers);
+            $redisConnection->connection()->hMSet($issueNumber, ['status' => $issueStatus, 'members' => $issueMembersArray, 'avg' => $avgSum/$membersVoteCount]);
 
             $jsonResponse = json_encode(['message'=> 'The vote was counted']);
             $response->getBody()->write("$jsonResponse");
