@@ -40,7 +40,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									""
+									"postman.setNextRequest(\"loginUser\");"
 								],
 								"type": "text/javascript"
 							}
@@ -51,7 +51,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jesus Rodriguez\",\r\n    \"userName\": \"ireiser\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Test Name\",\r\n    \"userName\": \"userNameTest01\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -59,12 +59,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8082/user",
-							"protocol": "http",
+							"raw": "{{host}}:{{port}}/user",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8082",
+							"port": "{{port}}",
 							"path": [
 								"user"
 							]
@@ -74,12 +73,38 @@
 				},
 				{
 					"name": "loginUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have a name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var name = jsonData.name;\r",
+									"    pm.expect(name).string\r",
+									"    pm.environment.set(\"name\", name);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "userName",
+								"value": "{{userName}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\": \"ireiser\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -87,12 +112,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8082/user/login",
-							"protocol": "http",
+							"raw": "{{host}}:{{port}}/user/login",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8082",
+							"port": "{{port}}",
 							"path": [
 								"user",
 								"login"
@@ -117,11 +141,25 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have a issue\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var issue = jsonData.issue;\r",
+									"    pm.expect(issue).exist\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [
@@ -132,22 +170,12 @@
 								"disabled": true
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8082/issue/{{issue}}",
-							"protocol": "http",
+							"raw": "{{host}}:{{port}}/issue/{{issue}}",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8082",
+							"port": "{{port}}",
 							"path": [
 								"issue",
 								"{{issue}}"
@@ -188,12 +216,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8082/issue/{{issue}}/join",
-							"protocol": "http",
+							"raw": "{{host}}:{{port}}/issue/{{issue}}/join",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8082",
+							"port": "{{port}}",
 							"path": [
 								"issue",
 								"{{issue}}",
@@ -235,12 +262,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8082/issue/{{issue}}/vote",
-							"protocol": "http",
+							"raw": "{{host}}:{{port}}/issue/{{issue}}/vote",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8082",
+							"port": "{{port}}",
 							"path": [
 								"issue",
 								"{{issue}}",
@@ -261,18 +287,34 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have a issues\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var issues = jsonData.issues;\r",
+									"    pm.expect(issues).exist\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8082/issue/all",
-							"protocol": "http",
+							"raw": "{{host}}:{{port}}/issue/all",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8082",
+							"port": "{{port}}",
 							"path": [
 								"issue",
 								"all"
@@ -288,16 +330,28 @@
 			"item": [
 				{
 					"name": "clearAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8082/reset",
-							"protocol": "http",
+							"raw": "{{host}}:{{port}}/reset",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8082",
+							"port": "{{port}}",
 							"path": [
 								"reset"
 							]
