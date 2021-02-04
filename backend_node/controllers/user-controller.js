@@ -13,17 +13,18 @@ exports.loginUser = async (req, res, next) => {
 
 	try {
 		const result = await redisClient.get(userName);
-		if (result) {
-			res.status(200).json({
-				name: result,
-			});
-		} else {
-			res.status(404).json({
+
+		if (!result) {
+			return res.status(404).json({
 				message: "User was not found",
 			});
 		}
+
+		return res.status(200).json({
+			name: result,
+		});
 	} catch (error) {
-		res.status(500).json({
+		return res.status(500).json({
 			message: `Server error ${error}`,
 		});
 	}
@@ -32,7 +33,6 @@ exports.loginUser = async (req, res, next) => {
 exports.createUser = async (req, res, next) => {
 	const name = req.body.name;
 	const userName = req.body.userName;
-
 	const nameIsValid = Joi.string().required().validate(name);
 	const userNameIsValid = Joi.string().required().validate(userName);
 
@@ -45,27 +45,26 @@ exports.createUser = async (req, res, next) => {
 	const userNameExists = await redisClient.exists(userName);
 
 	if (userNameExists) {
-		res.status(409).json({
+		return res.status(409).json({
 			message: "User already exists",
 		});
-		return;
 	}
 
 	try {
 		const result = await redisClient.set(userName, name);
-		if (result === "OK") {
-			res.status(201).json({
-				name,
-				userName,
-				result,
-			});
-		} else {
-			res.status(500).json({
+
+		if (result !== "OK") {
+			return res.status(500).json({
 				message: result,
 			});
 		}
+
+		return res.status(201).json({
+			name,
+			userName,
+		});
 	} catch (error) {
-		res.status(500).json({
+		return res.status(500).json({
 			message: `Server error ${error}`,
 		});
 	}
