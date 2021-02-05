@@ -6,7 +6,7 @@
 	"scripts": {
 		"serve": "node index.js",
 		"dev": "cross-env NODE_ENV=development nodemon --legacy-watch index.js",
-		"test": "jest",
+		"test": "newman run newman/workana_dev.postman_collection.json --folder test --environment newman/workana_dev.postman_environment.json -r cli",
 		"lint": "eslint --ignore-path .gitignore . --fix",
 		"format": "npm run prettier -- --write",
 		"check-format": "npm run prettier -- --list-different",
