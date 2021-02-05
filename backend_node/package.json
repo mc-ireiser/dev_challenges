@@ -6,7 +6,12 @@
 	"scripts": {
 		"serve": "node index.js",
 		"dev": "cross-env NODE_ENV=development nodemon --legacy-watch index.js",
-		"test": "newman run newman/workana_dev.postman_collection.json --folder test --environment newman/workana_dev.postman_environment.json -r cli"
+		"test": "jest",
+		"lint": "eslint --ignore-path .gitignore . --fix",
+		"format": "npm run prettier -- --write",
+		"check-format": "npm run prettier -- --list-different",
+		"prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json)\"",
+		"validate": "npm run format && npm run check-format && npm run lint"
 	},
 	"author": "",
 	"license": "ISC",
@@ -22,7 +27,14 @@
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3",
+		"eslint": "^7.19.0",
+		"eslint-config-prettier": "^7.2.0",
+		"eslint-plugin-prettier": "^3.3.1",
+		"husky": "^4.3.8",
+		"jest": "^26.6.3",
+		"lint-staged": "^10.5.3",
 		"newman": "^5.2.1",
-		"nodemon": "^2.0.6"
+		"nodemon": "^2.0.6",
+		"prettier": "^2.2.1"
 	}
 }
