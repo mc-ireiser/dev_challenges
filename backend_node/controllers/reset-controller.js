@@ -1,6 +1,6 @@
 const redisClient = require("../helpers/redis");
 
-exports.resetdb = async (req, res, next) => {
+exports.resetdb = async (req, res) => {
 	try {
 		const result = await redisClient.flushall();
 

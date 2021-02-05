@@ -1,7 +1,7 @@
 const redisClient = require("../helpers/redis");
 const Joi = require("joi");
 
-exports.loginUser = async (req, res, next) => {
+exports.loginUser = async (req, res) => {
 	const userName = req.headers.username;
 	const userNameIsValid = Joi.string().required().validate(userName);
 
@@ -30,7 +30,7 @@ exports.loginUser = async (req, res, next) => {
 	}
 };
 
-exports.createUser = async (req, res, next) => {
+exports.createUser = async (req, res) => {
 	const name = req.body.name;
 	const userName = req.body.userName;
 	const nameIsValid = Joi.string().required().validate(name);

@@ -12,9 +12,9 @@ module.exports = async function checkuserName(req, res, next) {
 	}
 
 	try {
-		const exists = await redisClient.exists(userName);
+		const userNameExists = await redisClient.exists(userName);
 
-		if (!exists) {
+		if (!userNameExists) {
 			return res.status(401).json({
 				message: "Unauthorized. A new userName is required",
 			});

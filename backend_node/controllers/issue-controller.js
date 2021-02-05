@@ -1,8 +1,7 @@
 const redisClient = require("../helpers/redis");
-const Joi = require("joi");
 
 // joinIssue
-exports.joinIssue = async (req, res, next) => {
+exports.joinIssue = async (req, res) => {
 	const issueNumber = req.params.issue;
 	const userName = req.headers.username;
 
@@ -39,7 +38,7 @@ exports.joinIssue = async (req, res, next) => {
 };
 
 // getAllIssue
-exports.getAllIssue = async (req, res, next) => {
+exports.getAllIssue = async (req, res) => {
 	try {
 		const issues = await redisClient.lrange("index", 0, -1);
 		return res.json({
@@ -53,7 +52,7 @@ exports.getAllIssue = async (req, res, next) => {
 };
 
 // getIssue
-exports.getIssue = async (req, res, next) => {
+exports.getIssue = async (req, res) => {
 	const issueNumber = req.params.issue;
 
 	try {
@@ -102,7 +101,7 @@ exports.getIssue = async (req, res, next) => {
 };
 
 // voteIssue
-exports.voteIssue = async (req, res, next) => {
+exports.voteIssue = async (req, res) => {
 	const userName = req.headers.username;
 	const issueNumber = req.params.issue;
 
