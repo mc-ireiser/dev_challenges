@@ -15,19 +15,21 @@ In response to [Workana Hiring challenge](guidelines.md)
 Let's build a REST API with the following endpoints. Feel free to change some things these
 descriptions are only for guidance.
 
-#### POST /issue/{:issue}/join - Used to join {:issue}
+**POST** `/issue/{:issue}/join` - Used to join `{:issue}`
 
 - If issue not exists generate a new one.
 - Must receive a payload with the intended name. ie: `{"name": "florencia"}`
 - Feel free to use a session or token to keep identified the user in subsequent requests.
 
-#### POST /issue/{:issue}/vote - Used to vote {:issue}. Must receive a payload with the vote value
+**POST** `/issue/{:issue}/vote` - Used to vote `{:issue}`.
+
+Must receive a payload with the vote value
 
 - Reject votes when status of `{:issue}` is not `voting`.
 - Reject votes if user not joined `{:issue}`.
 - Reject votes if user already `voted` or `passed`.
 
-#### GET /issue/{:issue} - Returns the status of issue
+**GET** `/issue/{:issue}` - Returns the status of issue
 
 Because during `voting` status the votes are secret you must hide each vote until all members voted.
 
@@ -90,7 +92,7 @@ Provide an interface to use the system.
 
 To run this code you need:
 
-- [Docker](https://www.docker.com/get-started) and [docker-compose](https://docs.docker.com/compose/install/) installed
+[Docker](https://www.docker.com/get-started) and [docker-compose](https://docs.docker.com/compose/install/) installed
 
 Then:
 
@@ -99,7 +101,8 @@ Then:
 
 Check if services are up and running:
 
-- Node backend in [localhost:8082](http://localhost:8082)
+- PHP backend in [localhost:8081](http://localhost:8081)
+- Node.js backend in [localhost:8082](http://localhost:8082)
 - Frontend server in [localhost:8080](http://localhost:8080/)
 
 ## For DEV

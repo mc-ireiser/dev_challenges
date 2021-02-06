@@ -14,7 +14,7 @@ This time let's build a little [planning poker](https://en.wikipedia.org/wiki/Pl
 will work in multiple levels (while you're
 not supposed to work on all of them we hope that you can handle at least one with a good level of expertise).
 
-### At backend layer you can choose among three options:
+### At backend layer you can choose among three options
 
 - **Mocked Service** mock your responses in the client side using async functions (use this option if you are front developer)
 - **Node Js Backend** Here you can use express, implement your own server or any framework of your preference. If you go with this option
@@ -27,23 +27,26 @@ not supposed to work on all of them we hope that you can handle at least one wit
 Let's build a REST API with the following endpoints. Feel free to change some things these
 descriptions are only for guidance.
 
-#### `POST /issue/{:issue}/join` - Used to join `{:issue}`.
+**POST** `/issue/{:issue}/join` - Used to join `{:issue}`
 
 - If issue not exists generate a new one.
 - Must receive a payload with the intended name. ie: `{"name": "florencia"}`
 - Feel free to use a session or token to keep identified the user in subsequent requests.
 
-#### `POST /issue/{:issue}/vote` - Used to vote `{:issue}`. Must receive a payload with the vote value.
+**POST** `/issue/{:issue}/vote` - Used to vote `{:issue}`.
+
+Must receive a payload with the vote value
 
 - Reject votes when status of `{:issue}` is not `voting`.
 - Reject votes if user not joined `{:issue}`.
 - Reject votes if user already `voted` or `passed`.
 
-#### `GET /issue/{:issue}` - Returns the status of issue
+**GET** `/issue/{:issue}` - Returns the status of issue
 
 Because during `voting` status the votes are secret you must hide each vote until all members voted.
 
 - Issue is `voting`:
+
   ```json
   {
     "status": "voting",
@@ -54,7 +57,9 @@ Because during `voting` status the votes are secret you must hide each vote unti
     ]
   }
   ```
+
 - Issue is `reveal` when all users emitted their votes:
+
   ```json
   {
     "status": "reveal",
@@ -116,7 +121,7 @@ details and put some effort to treat errors with robustness.
 Feel free to guide us to review your code and explain where you put more effort
 or what you were thinking when you take the key design decisions.
 
-#### Some considerations:
+#### Some considerations
 
 - The demo is in a single component, but it's better if you can use many, and demonstrate how would you communicate between them. "Divide and Conquer" :muscle:
 - Try to use good conventions and semantically correct names for variables & functions.
