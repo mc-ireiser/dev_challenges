@@ -1,22 +1,27 @@
 {
+	"author": "Jesus Rodriguez",
+	"license": "MIT",
 	"name": "backend_node",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Workana dev challenges",
 	"main": "server.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mc-ireiser/dev_challenges",
+		"directory": "dev_challenges/backend_node"
+	},
 	"scripts": {
+		"serve": "cross-env NODE_ENV=production PORT=8082 REDISDB=0 node src/server.js",
 		"dev": "cross-env NODE_ENV=development nodemon --legacy-watch src/server.js",
-		"serve": "node src/server.js",
 		"setup": "mpn run validate && npm run serve",
 		"test": "cross-env NODE_ENV=testing PORT=8008 REDISDB=1 mocha --colors --jobs 1 --recursive --exit",
-		"test-watch": "cross-env NODE_ENV=testing PORT=8008 REDISDB=1 mocha --watch --recursive --jobs 1",
+		"test-watch": "cross-env NODE_ENV=testing PORT=8008 REDISDB=1 mocha --colors --watch --recursive --jobs 1",
 		"validate": "npm run format && npm run check-format && npm run test && npm run lint",
 		"prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json)\"",
 		"format": "npm run prettier -- --write",
 		"check-format": "npm run prettier -- --list-different",
 		"lint": "eslint --ignore-path .gitignore . --fix"
 	},
-	"author": "",
-	"license": "ISC",
 	"dependencies": {
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
