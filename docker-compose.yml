@@ -28,8 +28,8 @@ services:
       - "./backend_node/:/home/node/app"
     expose:
       - "8082"
-    command: bash -c "npm ci && npm run serve"
-    #command: bash -c "npm i && npm run dev"
+    # command: bash -c "npm ci && npm run setup"
+    command: bash -c "npm i && npm run dev"
     working_dir: /home/node/app
     ports:
       - 8082:8082
@@ -46,8 +46,8 @@ services:
       - "./frontend/:/home/node/app"
     expose:
       - "8080"
-    command: bash -c "npm ci && npm i -g serve && npm run build && serve -l 8080 -s dist"
-    #command: bash -c "npm i && npm run serve"
+    # command: bash -c "npm ci && npm i -g serve && npm run build && serve -l 8080 -s dist"
+    command: bash -c "npm i && npm run serve"
     working_dir: /home/node/app
     ports:
       - 8080:8080

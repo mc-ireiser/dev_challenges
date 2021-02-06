@@ -1,11 +1,6 @@
-const app = require("express")();
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const app = require("./index").app;
+
 const ws = require("ws");
-
-app.use(bodyParser.json());
-app.use(cors());
-
 const wsServer = new ws.Server({ noServer: true });
 
 wsServer.on("connection", (socket) => {
@@ -21,16 +16,6 @@ function sendMessageToEveryClient(message) {
 	});
 }
 
-// Router
-const resetRoutes = require("./routes/reset-route");
-const issueRoutes = require("./routes/issue-route");
-const userRoutes = require("./routes/user-route");
-
-// Routes map
-app.use("/reset", resetRoutes);
-app.use("/issue", issueRoutes);
-app.use("/user", userRoutes);
-
 const PORT = process.env.PORT || 8082;
 
 const server = app.listen(PORT, () => {
@@ -43,4 +28,4 @@ server.on("upgrade", (request, socket, head) => {
 	});
 });
 
-module.exports = app;
+module.exports = { server };

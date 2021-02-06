@@ -1,6 +1,6 @@
 const { createNodeRedisClient } = require("handy-redis");
 
-const dbNumber = process.env.NODE_ENV === "testing" ? 1 : 0;
+const dbNumber = process.env.REDISDB;
 
 const client = createNodeRedisClient({
 	host: "redis",
