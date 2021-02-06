@@ -16,10 +16,11 @@ function sendMessageToEveryClient(message) {
 	});
 }
 
-const PORT = process.env.PORT || 8082;
+const PORT = process.env.PORT;
+const ENV = process.env.NODE_ENV;
 
 const server = app.listen(PORT, () => {
-	console.log(`Backend node listen in PORT: ${PORT}`);
+	console.log(`Backend Node.js in ${ENV} mode, listen in PORT: ${PORT}`);
 });
 
 server.on("upgrade", (request, socket, head) => {
