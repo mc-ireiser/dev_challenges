@@ -12,10 +12,10 @@
 	},
 	"scripts": {
 		"serve": "cross-env NODE_ENV=production PORT=8082 REDISDB=0 node src/server.js",
-		"dev": "cross-env NODE_ENV=development nodemon --legacy-watch src/server.js",
+		"dev": "cross-env NODE_ENV=development PORT=8082 REDISDB=1 nodemon --legacy-watch src/server.js",
 		"setup": "npm run validate && npm run serve",
-		"test": "cross-env NODE_ENV=testing PORT=8008 REDISDB=1 mocha --colors --jobs 1 --recursive --exit",
-		"test-watch": "cross-env NODE_ENV=testing PORT=8008 REDISDB=1 mocha --colors --watch --recursive --jobs 1",
+		"test": "cross-env NODE_ENV=testing PORT=8008 REDISDB=2 mocha --colors --jobs 1 --recursive --exit",
+		"test-watch": "cross-env NODE_ENV=testing PORT=8008 REDISDB=2 mocha --colors --watch --recursive --jobs 1",
 		"validate": "npm run format && npm run check-format && npm run test && npm run lint",
 		"prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json)\"",
 		"format": "npm run prettier -- --write",
