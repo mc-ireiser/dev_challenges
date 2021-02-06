@@ -1,5 +1,7 @@
 # Planning poker
 
+![GitHub last commit](https://img.shields.io/github/last-commit/mc-ireiser/dev_challenges?style=for-the-badge) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mc-ireiser/dev_challenges/CI?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/mc-ireiser/dev_challenges?style=for-the-badge)
+
 Planning poker, also called Scrum poker, is a consensus-based, gamified technique for estimating, mostly used to estimate effort or relative size of development goals in software development. In planning poker, members of the group make estimates by playing numbered cards face-down to the table, instead of speaking them aloud.
 
 The cards are revealed, and the estimates are then discussed. By hiding the figures in this way, the group can avoid the cognitive bias of anchoring, where the first number spoken aloud sets a precedent for subsequent estimates. [wikipedia](https://en.wikipedia.org/wiki/Planning_poker)
@@ -13,23 +15,24 @@ In response to [Workana Hiring challenge](guidelines.md)
 Let's build a REST API with the following endpoints. Feel free to change some things these
 descriptions are only for guidance.
 
-##### `POST /issue/{:issue}/join` - Used to join `{:issue}`.
+#### POST /issue/{:issue}/join - Used to join {:issue}
 
 - If issue not exists generate a new one.
 - Must receive a payload with the intended name. ie: `{"name": "florencia"}`
 - Feel free to use a session or token to keep identified the user in subsequent requests.
 
-##### `POST /issue/{:issue}/vote` - Used to vote `{:issue}`. Must receive a payload with the vote value.
+#### POST /issue/{:issue}/vote - Used to vote {:issue}. Must receive a payload with the vote value
 
 - Reject votes when status of `{:issue}` is not `voting`.
 - Reject votes if user not joined `{:issue}`.
 - Reject votes if user already `voted` or `passed`.
 
-##### `GET /issue/{:issue}` - Returns the status of issue
+#### GET /issue/{:issue} - Returns the status of issue
 
 Because during `voting` status the votes are secret you must hide each vote until all members voted.
 
 - Issue is `voting`:
+
   ```json
   {
     "status": "voting",
@@ -40,7 +43,9 @@ Because during `voting` status the votes are secret you must hide each vote unti
     ]
   }
   ```
+
 - Issue is `reveal` when all users emitted their votes:
+
   ```json
   {
     "status": "reveal",
