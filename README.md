@@ -1,6 +1,6 @@
 # Planning poker
 
-![GitHub last commit](https://img.shields.io/github/last-commit/mc-ireiser/dev_challenges?style=for-the-badge) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mc-ireiser/dev_challenges/CI?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/mc-ireiser/dev_challenges?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/mc-ireiser/dev_challenges?style=for-the-badge) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mc-ireiser/dev_challenges/CI?style=for-the-badge) ![Codacy grade](https://img.shields.io/codacy/grade/4eb2d642c0b84f5a831a4b3f8995cf22?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/mc-ireiser/dev_challenges?style=for-the-badge)
 
 Planning poker, also called Scrum poker, is a consensus-based, gamified technique for estimating, mostly used to estimate effort or relative size of development goals in software development. In planning poker, members of the group make estimates by playing numbered cards face-down to the table, instead of speaking them aloud.
 
