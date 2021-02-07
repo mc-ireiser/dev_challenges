@@ -18,11 +18,11 @@ class IssueController
             $redisConnection = new RedisConnector();
             $resultData = $redisConnection->connection()->lRange("index", 0, -1);
             $jsonResponse = json_encode(['issues' => $resultData]);
-            return ReturnResponse::send($response, $jsonResponse, 200);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error' . $e]);
-            return ReturnResponse::send($response, $jsonResponse, 500);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 500);
         }
     }
 
@@ -70,11 +70,11 @@ class IssueController
             }
 
             $jsonResponse = json_encode(['issue' => $issue]);
-            return ReturnResponse::send($response, $jsonResponse, 200);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error' . $e]);
-            return ReturnResponse::send($response, $jsonResponse, 500);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 500);
         }
     }
 
@@ -103,14 +103,14 @@ class IssueController
 
                 if ($memberExist) {
                     $jsonResponse = json_encode(['message' => 'The user was already attached to the issue']);
-                    return ReturnResponse::send($response, $jsonResponse, 200);
+                    return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
                 }
 
                 $issueMembers[] = $newMember;
                 $issueMembers = json_encode($issueMembers);
                 $redisConnection->connection()->hMSet($issueNumber, ['status' => 'voting', 'members' => $issueMembers]);
                 $jsonResponse = json_encode(['message' => 'Joined the issue successfully']);
-                return ReturnResponse::send($response, $jsonResponse, 200);
+                return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
             }
 
             $members = json_encode([$newMember]);
@@ -118,11 +118,11 @@ class IssueController
                 ->hMSet($issueNumber, ['status' => 'voting', 'members' => $members, 'avg' => 0]);
             $redisConnection->connection()->rPush('index', $issueNumber);
             $jsonResponse = json_encode(['message' => 'A new issue was created']);
-            return ReturnResponse::send($response, $jsonResponse, 200);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error' . $e]);
-            return ReturnResponse::send($response, $jsonResponse, 500);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 500);
         }
     }
 
@@ -163,17 +163,17 @@ class IssueController
 
             if (!$isMember) {
                 $jsonResponse = json_encode(['message'=> 'The user is not joined to this issue']);
-                return ReturnResponse::send($response, $jsonResponse, 200);
+                return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
             }
 
             if($isVoted) {
                 $jsonResponse = json_encode(['message'=> 'The issue has already been voted']);
-                return ReturnResponse::send($response, $jsonResponse, 200);
+                return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
             }
 
             if ($memberStatus != 'waiting') {
                 $jsonResponse = json_encode(['message'=> 'The user already voted on this issue']);
-                return ReturnResponse::send($response, $jsonResponse, 200);
+                return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
             }
 
             $issueStatus = true;
@@ -188,11 +188,11 @@ class IssueController
             $redisConnection->connection()->hMSet($issueNumber, ['status' => $issueStatus, 'members' => $issueMembersArray, 'avg' => $avgSum/$membersVoteCount]);
 
             $jsonResponse = json_encode(['message'=> 'The vote was counted']);
-            return ReturnResponse::send($response, $jsonResponse, 200);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error' . $e]);
-            return ReturnResponse::send($response, $jsonResponse, 500);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 500);
         }
     }
 }

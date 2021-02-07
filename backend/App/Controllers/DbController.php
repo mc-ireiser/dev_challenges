@@ -18,11 +18,11 @@ class DbController
             $redisConnection = new RedisConnector();
             $redisConnection->connection()->flushAll();
             $jsonResponse = json_encode(['message'=> 'The database was deleted']);
-            return ReturnResponse::send($response, $jsonResponse, 200);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error' . $e]);
-            return ReturnResponse::send($response, $jsonResponse, 500);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 500);
         }
     }
 }

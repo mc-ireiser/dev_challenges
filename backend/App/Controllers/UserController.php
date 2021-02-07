@@ -24,16 +24,16 @@ class UserController
 
             if ($userExists) {
                 $jsonResponse = json_encode(['message'=> 'User already exists']);
-                return ReturnResponse::send($response, $jsonResponse, 409);
+                return (new Utils\ReturnResponse)->send($response, $jsonResponse, 409);
             }
 
             $redisConnection->connection()->set($userName, $name);
             $jsonResponse = json_encode(['name' => $name,  'userName' => $userName]);
-            return ReturnResponse::send($response, $jsonResponse, 201);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 201);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error: ' . $e]);
-            return ReturnResponse::send($response, $jsonResponse, 500);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 500);
         }
     }
 
@@ -47,16 +47,16 @@ class UserController
 
             if (!$userExists) {
                 $jsonResponse = json_encode(['message'=> 'User was not found']);
-                return ReturnResponse::send($response, $jsonResponse, 404);
+                return (new Utils\ReturnResponse)->send($response, $jsonResponse, 404);
             }
 
             $resultGetData = $redisConnection->connection()->get($userName[0]);
             $jsonResponse = json_encode(['name' => $resultGetData]);
-            return ReturnResponse::send($response, $jsonResponse, 200);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
 
         } catch (RedisException $e) {
             $jsonResponse = json_encode(['message'=> 'Database error: ', $e]);
-            return ReturnResponse::send($response, $jsonResponse, 500);
+            return (new Utils\ReturnResponse)->send($response, $jsonResponse, 500);
         }
     }
 }
