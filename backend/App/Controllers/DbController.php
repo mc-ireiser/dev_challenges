@@ -16,7 +16,7 @@ class DbController
     {
         try {
             $redisConnection = new RedisConnector();
-            $redisConnection->connection()->flushAll();
+            $redisConnection->connection()->flushDB();
             $jsonResponse = json_encode(['message'=> 'The database was deleted']);
             return (new Utils\ReturnResponse)->send($response, $jsonResponse, 200);
 
